@@ -41,9 +41,6 @@
 --which carries forward this exception.
 
 
--- This section is for new custom content
-
-includeFile("custom_content/mobile/som/objects.lua")
 
 --Stock files from here.
 --*******************************************************************************************************************
@@ -123,6 +120,7 @@ includeFile("creature/npc/objects.lua")
 includeFile("creature/player/base/objects.lua")
 includeFile("creature/player/objects.lua")
 includeFile("creature/objects.lua")
+includeFile("custom_content/mobile/som/objects.lua")
 includeFile("draft_schematic/armor/component/objects.lua")
 includeFile("draft_schematic/armor/objects.lua")
 includeFile("draft_schematic/base/objects.lua")
