@@ -43,6 +43,7 @@
 
 -- This section is for new custom content
 
+includeFile("custom_content/mobile/som/objects.lua")
 
 --Stock files from here.
 --*******************************************************************************************************************

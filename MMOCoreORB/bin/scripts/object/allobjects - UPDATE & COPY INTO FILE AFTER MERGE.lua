@@ -2,4 +2,10 @@
 
 -- After a merge from unstable update the original allobjects.lua as necessary.
 
---includeFile("new/objects.lua")
+
+-- This section is for new custom content
+
+includeFile("custom_content/mobile/som/objects.lua")
+
+--Stock files from here.
+--*******************************************************************************************************************
