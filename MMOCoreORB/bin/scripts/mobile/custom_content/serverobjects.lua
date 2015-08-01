@@ -1,0 +1,3 @@
+--*
+
+--includeFile("***/serverobjects.lua")

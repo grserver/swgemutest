@@ -40,6 +40,13 @@
 --this exception also makes it possible to release a modified version 
 --which carries forward this exception.
 
+
+-- This section is for new custom content
+
+
+--Stock files from here.
+--*******************************************************************************************************************
+
 includeFile("object.lua")
 includeFile("SharedObjectTemplate.lua")
 includeFile("SharedTangibleObjectTemplate.lua")
