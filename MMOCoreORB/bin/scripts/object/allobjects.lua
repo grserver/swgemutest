@@ -40,6 +40,11 @@
 --this exception also makes it possible to release a modified version 
 --which carries forward this exception.
 
+
+
+--Stock files from here.
+--*******************************************************************************************************************
+
 includeFile("object.lua")
 includeFile("SharedObjectTemplate.lua")
 includeFile("SharedTangibleObjectTemplate.lua")
@@ -115,6 +120,7 @@ includeFile("creature/npc/objects.lua")
 includeFile("creature/player/base/objects.lua")
 includeFile("creature/player/objects.lua")
 includeFile("creature/objects.lua")
+includeFile("custom_content/mobile/som/objects.lua")
 includeFile("draft_schematic/armor/component/objects.lua")
 includeFile("draft_schematic/armor/objects.lua")
 includeFile("draft_schematic/base/objects.lua")
