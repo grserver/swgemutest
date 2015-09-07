@@ -84,8 +84,11 @@ class StructureObject extends TangibleObject {
 	 */
 	public native void notifyLoadFromDatabase();
 
+	public native void destroyObjectFromWorld(boolean sendSelfDestroy);
+
 	public native void notifyInsertToZone(Zone zone);
 
+	@preLocked
 	public void createChildObjects() {
 		super.createChildObjects();
 	}
