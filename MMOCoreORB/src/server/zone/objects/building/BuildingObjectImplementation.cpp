@@ -1095,6 +1095,9 @@ void BuildingObjectImplementation::promptPayAccessFee(CreatureObject* player) {
 
 	PlayerObject* ghost = player->getPlayerObject();
 
+	if (ghost == NULL)
+		return;
+
 	if (ghost->hasSuiBoxWindowType(SuiWindowType::STRUCTURE_CONSENT_PAY_ACCESS_FEE))
 		return;
 
@@ -1146,7 +1149,11 @@ void BuildingObjectImplementation::payAccessFee(CreatureObject* player) {
 
 	if(owner != NULL && owner->isPlayerCreature()) {
 		Locker clocker(owner, player);
-		owner->getPlayerObject()->addExperience("merchant", 50, true);
+
+		PlayerObject* ghost = owner->getPlayerObject();
+
+		if (ghost != NULL)
+			ghost->addExperience("merchant", 50, true);
 	}
 
 	updatePaidAccessList();
@@ -1436,8 +1443,6 @@ void BuildingObjectImplementation::spawnChildSceneObject(String& templatePath, f
 		zone->transferObject(object, -1, true);
 	}
 
-	objLocker.release();
-
 	object->createChildObjects();
 
 	childObjects.put(object);
@@ -1474,7 +1479,7 @@ void BuildingObjectImplementation::spawnChildCreaturesFromTemplate(){
 					}
 
 				} catch (Exception& e) {
-						error("unreported exception caught in void SceneObjectImplementation::createChildObjects()!");
+						error("unreported exception caught in void BuildingObjectImplementation::spawnChildCreaturesFromTemplate()!");
 						e.printStackTrace();
 				}
 

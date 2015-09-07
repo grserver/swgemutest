@@ -324,6 +324,8 @@ Reference<SceneObject*> PlanetManagerImplementation::loadSnapshotObject(WorldSna
 
 	object = zoneServer->createClientObject(serverTemplate.hashCode(), objectID);
 
+	Locker locker(object);
+
 	object->initializePosition(position.getX(), position.getZ(), position.getY());
 	object->setDirection(node->getDirection());
 
@@ -331,7 +333,7 @@ Reference<SceneObject*> PlanetManagerImplementation::loadSnapshotObject(WorldSna
 		CellObject* cell = cast<CellObject*>(object.get());
 		BuildingObject* building = cast<BuildingObject*>(parentObject.get());
 
-		Locker locker(building);
+		Locker clocker(building, object);
 
 		building->addCell(cell, node->getCellID());
 	}
@@ -392,8 +394,13 @@ void PlanetManagerImplementation::loadSnapshotObjects() {
 			objects.add(object);
 	}
 
-	for (int i = 0; i < objects.size(); ++i)
-		objects.get(i)->createChildObjects();
+	for (int i = 0; i < objects.size(); ++i) {
+		SceneObject* sceno = objects.get(i);
+
+		Locker locker(sceno);
+
+		sceno->createChildObjects();
+	}
 
 	delete iffStream;
 
@@ -801,10 +808,12 @@ bool PlanetManagerImplementation::isSpawningPermittedAt(float x, float y, float 
 bool PlanetManagerImplementation::isBuildingPermittedAt(float x, float y, SceneObject* object, float margin) {
 	SortedVector<ActiveArea*> activeAreas;
 
-	Vector3 targetPos(x, y, zone->getHeight(x, y));
+	Vector3 targetPos(x, y, 0);
 
 	if (!zone->isWithinBoundaries(targetPos))
 		return false;
+
+	//targetPos.setZ(zone->getHeight(x, y)); not needed
 
 	zone->getInRangeActiveAreas(x, y, &activeAreas, true);
 
