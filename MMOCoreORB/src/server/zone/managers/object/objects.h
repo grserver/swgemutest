@@ -9,10 +9,10 @@
 #define OBJECTS_H_
 
 #include "server/zone/objects/creature/CreatureObject.h"
-#include "server/zone/objects/creature/NonPlayerCreatureObject.h"
-#include "server/zone/objects/creature/Creature.h"
+#include "server/zone/objects/creature/ai/NonPlayerCreatureObject.h"
+#include "server/zone/objects/creature/ai/Creature.h"
 #include "server/zone/objects/creature/VehicleObject.h"
-#include "server/zone/objects/creature/DroidObject.h"
+#include "server/zone/objects/creature/ai/DroidObject.h"
 #include "server/zone/objects/intangible/IntangibleObject.h"
 #include "server/zone/objects/intangible/VehicleControlDevice.h"
 #include "server/zone/objects/intangible/PetControlDevice.h"
@@ -97,6 +97,7 @@
 #include "server/zone/objects/tangible/pharmaceutical/VitalityPack.h"
 #include "server/zone/objects/tangible/pharmaceutical/WoundPack.h"
 #include "server/zone/objects/tangible/misc/FsPuzzlePack.h"
+#include "server/zone/objects/tangible/misc/PlantObject.h"
 #include "server/zone/objects/tangible/terminal/mission/MissionTerminal.h"
 #include "server/zone/objects/tangible/sign/SignObject.h"
 #include "server/zone/objects/mission/MissionObject.h"

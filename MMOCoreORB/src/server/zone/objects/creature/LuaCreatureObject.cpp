@@ -7,7 +7,7 @@
 
 #include "LuaCreatureObject.h"
 #include "server/zone/objects/creature/CreatureObject.h"
-#include "server/zone/objects/creature/DroidObject.h"
+#include "server/zone/objects/creature/ai/DroidObject.h"
 #include "server/zone/objects/cell/CellObject.h"
 #include "server/zone/objects/player/sessions/ConversationSession.h"
 #include "server/zone/ZoneServer.h"
@@ -116,6 +116,7 @@ Luna<LuaCreatureObject>::RegType LuaCreatureObject::Register[] = {
 		{ "getOwner", &LuaCreatureObject::getOwner },
 		{ "getCurrentSpeed", &LuaCreatureObject::getCurrentSpeed },
 		{ "isInvisible", &LuaTangibleObject::isInvisible },
+		{ "isInCombat", &LuaCreatureObject::isInCombat },
 		{ 0, 0 }
 };
 
@@ -654,10 +655,15 @@ int LuaCreatureObject::isGroupedWith(lua_State* L) {
 int LuaCreatureObject::setLootRights(lua_State* L) {
 	CreatureObject* player = (CreatureObject*) lua_touserdata(L, -1);
 
-	if (realObject == NULL || player == NULL)
+	if (realObject == NULL)
 		return 0;
 
-	uint64 ownerID = player->getObjectID();
+	uint64 ownerID = 0;
+
+	if (player != NULL) {
+		ownerID = player->getObjectID();
+	}
+
 	SceneObject* inventory = realObject->getSlottedObject("inventory");
 
 	if (inventory == NULL)
@@ -877,6 +883,14 @@ int LuaCreatureObject::getCurrentSpeed(lua_State* L) {
 	float currentSpeed = realObject->getCurrentSpeed();
 
 	lua_pushnumber(L, currentSpeed);
+
+	return 1;
+}
+
+int LuaCreatureObject::isInCombat(lua_State* L) {
+	bool retVal = realObject->isInCombat();
+
+	lua_pushboolean(L, retVal);
 
 	return 1;
 }

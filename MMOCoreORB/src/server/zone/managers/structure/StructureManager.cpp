@@ -47,7 +47,7 @@
 
 void StructureManager::loadPlayerStructures(const String& zoneName) {
 
-	info("Loading player structures from playerstructures.db");
+	info("Loading player structures from playerstructures.db for zone: " + zoneName);
 
 	ObjectDatabaseManager* dbManager = ObjectDatabaseManager::instance();
 	ObjectDatabase* playerStructuresDatabase =
@@ -86,26 +86,22 @@ void StructureManager::loadPlayerStructures(const String& zoneName) {
 			if (object != NULL) {
 				++i;
 
-				if(object->isGCWBase()){
+				if (object->isGCWBase()) {
 					Zone* zone = object->getZone();
 
-					if(zone == NULL)
-						return;
+					if (zone != NULL) {
+						GCWManager* gcwMan = zone->getGCWManager();
 
-					GCWManager* gcwMan = zone->getGCWManager();
-					if(gcwMan == NULL)
-						return;
-
-					gcwMan->registerGCWBase(cast<BuildingObject*>(object.get()),false);
-
+						if (gcwMan != NULL) {
+							gcwMan->registerGCWBase(cast<BuildingObject*>(object.get()),false);
+						}
+					}
 				}
 
 				if (ConfigManager::instance()->isProgressMonitorActivated())
 					printf("\r\tLoading player structures [%d] / [?]\t", i);
 			} else {
-				error(
-						"Failed to deserialize structure with objectID: "
-								+ String::valueOf(objectID));
+				error("Failed to deserialize structure with objectID: " + String::valueOf(objectID));
 			}
 
 			objectData->clear();
@@ -113,14 +109,11 @@ void StructureManager::loadPlayerStructures(const String& zoneName) {
 
 		delete objectData;
 	} catch (DatabaseException& e) {
-		error(
-				"Database exception in StructureManager::loadPlayerStructures(): "
-						+ e.getMessage());
+		error("Database exception in StructureManager::loadPlayerStructures(): " + e.getMessage());
 	}
 
-	info(String::valueOf(i) + " player structures loaded for " + zoneName + ".",
-			true);
-
+	bool log = i > 0;
+	info(String::valueOf(i) + " player structures loaded for " + zoneName + ".", log);
 }
 
 int StructureManager::getStructureFootprint(SharedObjectTemplate* objectTemplate, int angle, float& l0, float& w0, float& l1, float& w1) {
@@ -340,20 +333,6 @@ int StructureManager::placeStructureFromDeed(CreatureObject* creature, Structure
 	}
 
 	Locker _lock(deed, creature);
-
-
-	if(serverTemplate->isDerivedFrom("object/building/faction_perk/base/shared_factional_building_base.iff")){
-		Zone* zone = creature->getZone();
-		if(zone == NULL)
-			return 1;
-
-		GCWManager* gcwMan = zone->getGCWManager();
-		if(gcwMan == NULL)
-			return 1;
-
-		if(!gcwMan->canPlaceMoreBases(creature))
-			return 1;
-	}
 
 	//Ensure that it is the correct deed, and that it is in a container in the creature's inventory.
 	if (!deed->isASubChildOf(creature)) {
@@ -690,7 +669,7 @@ Reference<SceneObject*> StructureManager::getInRangeParkingGarage(SceneObject* o
 	if (zone == NULL)
 		return NULL;
 
-	SortedVector<ManagedReference<QuadTreeEntry*> > closeSceneObjects;
+	SortedVector<QuadTreeEntry*> closeSceneObjects;
 	CloseObjectsVector* closeObjectsVector = (CloseObjectsVector*) obj->getCloseObjects();
 
 	if (closeObjectsVector == NULL) {
@@ -700,9 +679,9 @@ Reference<SceneObject*> StructureManager::getInRangeParkingGarage(SceneObject* o
 	}
 
 	for (int i = 0; i < closeSceneObjects.size(); ++i) {
-		SceneObject* scno = cast<SceneObject*>(closeSceneObjects.get(i).get());
+		SceneObject* scno = cast<SceneObject*>(closeSceneObjects.get(i));
 
-		if (scno == obj)
+		if (scno == NULL || scno == obj)
 			continue;
 
 		if (scno->isGarage() && scno->isInRange(obj, range))

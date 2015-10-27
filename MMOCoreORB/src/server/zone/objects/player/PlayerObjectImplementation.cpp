@@ -279,7 +279,7 @@ void PlayerObjectImplementation::notifySceneReady() {
 
 	creature->sendBuffsTo(creature);
 
-	GuildObject* guild = creature->getGuildObject();
+	ManagedReference<GuildObject*> guild = creature->getGuildObject().get();
 
 	if (guild != NULL) {
 		ManagedReference<ChatRoom*> guildChat = guild->getChatRoom();
@@ -1286,6 +1286,8 @@ void PlayerObjectImplementation::notifyOnline() {
 	//Login to jedi manager
 	JediManager::instance()->onPlayerLoggedIn(playerCreature);
 
+	notifyObservers(ObserverEventType::LOGGEDIN);
+
 	if (getForcePowerMax() > 0 && getForcePower() < getForcePowerMax())
 		activateForcePowerRegen();
 
@@ -1316,6 +1318,8 @@ void PlayerObjectImplementation::notifyOffline() {
 
 	//Logout from visibility manager
 	VisibilityManager::instance()->logout(playerCreature);
+
+	notifyObservers(ObserverEventType::LOGGEDOUT);
 
 	//Logout from jedi manager
 	JediManager::instance()->onPlayerLoggedOut(playerCreature);
@@ -1476,24 +1480,19 @@ float PlayerObjectImplementation::getFactionStanding(const String& factionName) 
 	return factionStandingList.getFactionStanding(factionName);
 }
 
-bool PlayerObjectImplementation::isFirstIncapacitationExpired() {
-	CreatureObject* creature = cast<CreatureObject*>( parent.get().get());
-	if (creature == NULL)
-		return false;
+void PlayerObjectImplementation::addIncapacitationTime() {
+	Time currentTime;
+	uint32 now = currentTime.getTime();
 
-	return creature->checkCooldownRecovery("firstIncapacitationTime");
-}
+	for (int i = incapacitationTimes.size() - 1; i >= 0; i--) {
+		uint32 incapTime = incapacitationTimes.get(i);
 
+		if ((now - incapTime) >= 600) {
+			incapacitationTimes.removeElementAt(i);
+		}
+	}
 
-void PlayerObjectImplementation::resetFirstIncapacitationTime() {
-	CreatureObject* creature = cast<CreatureObject*>( parent.get().get());
-	if (creature == NULL)
-		return;
-
-	if (!isFirstIncapacitation())
-		resetIncapacitationCounter();
-
-	creature->addCooldown("firstIncapacitationTime", 900000);
+	incapacitationTimes.add(now);
 }
 
 void PlayerObjectImplementation::logout(bool doLock) {
@@ -1519,7 +1518,7 @@ void PlayerObjectImplementation::logout(bool doLock) {
 }
 
 
-void PlayerObjectImplementation::doRecovery() {
+void PlayerObjectImplementation::doRecovery(int latency) {
 	if (getZoneServer()->isServerLoading()) {
 		activateRecovery();
 
@@ -1556,7 +1555,7 @@ void PlayerObjectImplementation::doRecovery() {
 		}
 	}
 
-	creature->activateHAMRegeneration();
+	creature->activateHAMRegeneration(latency);
 	creature->activateStateRecovery();
 
 	CooldownTimerMap* cooldownTimerMap = creature->getCooldownTimerMap();
@@ -1610,15 +1609,23 @@ void PlayerObjectImplementation::doRecovery() {
 void PlayerObjectImplementation::activateRecovery() {
 	if (recoveryEvent == NULL) {
 		recoveryEvent = new PlayerRecoveryEvent(_this.getReferenceUnsafeStaticCast());
+	}
 
+	if (!recoveryEvent->isScheduled()) {
 		recoveryEvent->schedule(3000);
 	}
 }
 
 void PlayerObjectImplementation::activateForcePowerRegen() {
+	if (forcePowerRegen == 0) {
+		return;
+	}
+
 	if (forceRegenerationEvent == NULL) {
 		forceRegenerationEvent = new ForceRegenerationEvent(_this.getReferenceUnsafeStaticCast());
+	}
 
+	if (!forceRegenerationEvent->isScheduled()) {
 		float timer = ((float) getForcePowerRegen()) / 5.f;
 		float scheduledTime = 10 / timer;
 		uint64 miliTime = static_cast<uint64>(scheduledTime * 1000.f);
@@ -1642,7 +1649,7 @@ void PlayerObjectImplementation::setOnline() {
 
 	clearCharacterBit(PlayerObjectImplementation::LD, true);
 
-	doRecovery();
+	doRecovery(1000);
 
 	activateMissions();
 }
@@ -1734,14 +1741,6 @@ void PlayerObjectImplementation::disconnect(bool closeClient, bool doLock) {
 
 void PlayerObjectImplementation::clearDisconnectEvent() {
 	disconnectEvent = NULL;
-}
-
-void PlayerObjectImplementation::clearRecoveryEvent() {
-	recoveryEvent = NULL;
-}
-
-void PlayerObjectImplementation::clearForceRegenerationEvent() {
-	forceRegenerationEvent = NULL;
 }
 
 void PlayerObjectImplementation::maximizeExperience() {
@@ -2033,11 +2032,11 @@ void PlayerObjectImplementation::updateInRangeBuildingPermissions() {
 
 	CloseObjectsVector* vec = (CloseObjectsVector*) parent->getCloseObjects();
 
-	SortedVector<ManagedReference<QuadTreeEntry* > > closeObjects;
+	SortedVector<QuadTreeEntry*> closeObjects;
 	vec->safeCopyTo(closeObjects);
 
 	for (int i = 0; i < closeObjects.size(); ++i) {
-		BuildingObject* building = closeObjects.get(i).castTo<BuildingObject*>();
+		BuildingObject* building = cast<BuildingObject*>(closeObjects.get(i));
 
 		if (building != NULL) {
 			building->updateCellPermissionsTo(parent);

@@ -18,8 +18,8 @@
 #include "server/zone/objects/intangible/PetControlDevice.h"
 #include "server/zone/managers/creature/PetManager.h"
 #include "server/zone/objects/player/PlayerObject.h"
-#include "server/zone/objects/creature/AiAgent.h"
-#include "server/zone/objects/creature/Creature.h"
+#include "server/zone/objects/creature/ai/AiAgent.h"
+#include "server/zone/objects/creature/ai/Creature.h"
 #include "server/zone/templates/tangible/SharedCreatureObjectTemplate.h"
 #include "server/zone/objects/tangible/component/genetic/GeneticComponent.h"
 #include "server/zone/managers/creature/CreatureManager.h"
@@ -523,11 +523,11 @@ void PetDeedImplementation::adjustPetLevel(CreatureObject* player, CreatureObjec
 	pet->reloadTemplate();
 	player->sendSystemMessage("@bio_engineer:pet_sui_level_fixed");
 }
-void PetDeedImplementation::adjustPetStats(CreatureObject* player, CreatureObject *pet) {
-	int oldLevel = pet->getLevel();
+bool PetDeedImplementation::adjustPetStats(CreatureObject* player, CreatureObject *pet) {
+	int oldLevel = level;
 	if (oldLevel < 1) {
 		player->sendSystemMessage("@bio_engineer:pet_sui_fix_error");
-		return;
+		return false;
 	}
 
 	if (oldLevel > 75) {
@@ -572,5 +572,5 @@ void PetDeedImplementation::adjustPetStats(CreatureObject* player, CreatureObjec
 	pet->reloadTemplate();
 
 	player->sendSystemMessage("@bio_engineer:pet_sui_stats_fixed");
-	return;
+	return true;
 }

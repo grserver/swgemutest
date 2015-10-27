@@ -25,7 +25,7 @@
 #include "server/zone/objects/group/GroupObject.h"
 #include "server/zone/objects/guild/GuildObject.h"
 #include "server/zone/objects/player/PlayerObject.h"
-#include "server/zone/objects/creature/AiAgent.h"
+#include "server/zone/objects/creature/ai/AiAgent.h"
 #include "server/zone/objects/intangible/PetControlDevice.h"
 #include "server/chat/StringIdChatParameter.h"
 #include "server/chat/PersistentMessage.h"
@@ -825,7 +825,13 @@ void ChatManagerImplementation::handleSpatialChatInternalMessage(CreatureObject*
 
 //TODO: Refactor into a sendInstantMessage() method that returns a returnCode.
 void ChatManagerImplementation::handleChatInstantMessageToCharacter(ChatInstantMessageToCharacter* message) {
-	ManagedReference<CreatureObject*> sender = cast<CreatureObject*>(message->getClient()->getPlayer().get().get());
+	ManagedReference<SceneObject*> scene = message->getClient()->getPlayer();
+
+	if (scene == NULL)
+		return;
+
+	CreatureObject* sender = cast<CreatureObject*>(scene.get());
+
 	bool privileged = false;
 
 	if (sender == NULL)
@@ -1032,7 +1038,7 @@ void ChatManagerImplementation::handleGuildChat(CreatureObject* sender, const Un
 		}
 	}
 
-	ManagedReference<GuildObject*> guild = sender->getGuildObject();
+	ManagedReference<GuildObject*> guild = sender->getGuildObject().get();
 	if (guild == NULL) {
 		sender->sendSystemMessage("@error_message:not_in_guild"); // You are not in a guild.
 		return;
@@ -1237,8 +1243,9 @@ int ChatManagerImplementation::sendMail(const String& sendername, const UnicodeS
 	}
 
 	CreatureObject* receiver = cast<CreatureObject*>(obj.get());
+	PlayerObject* receiverPlayerObject = receiver->getPlayerObject();
 
-	if (receiver->getPlayerObject()->isIgnoring(sendername) && !privileged)
+	if ((receiverPlayerObject == NULL) || (receiverPlayerObject->isIgnoring(sendername) && !privileged))
 		return IM_IGNORED;
 
 	ManagedReference<PersistentMessage*> mail = new PersistentMessage();

@@ -9,7 +9,7 @@
 #include "server/zone/Zone.h"
 #include "server/zone/managers/creature/CreatureManager.h"
 #include "server/zone/objects/creature/CreatureObject.h"
-#include "server/zone/objects/creature/AiAgent.h"
+#include "server/zone/objects/creature/ai/AiAgent.h"
 #include "server/zone/objects/creature/junkdealer/JunkdealerCreature.h"
 #include "server/conf/ConfigManager.h"
 #include "server/zone/objects/area/areashapes/CircularAreaShape.h"
@@ -30,6 +30,8 @@ void SpawnAreaMap::loadMap(Zone* z) {
 		LuaObject obj = lua->getGlobalObject(planetName + "_regions");
 
 		if (obj.isValidTable()) {
+			info("loading spawn areas...", true);
+
 			lua_State* s = obj.getLuaState();
 
 			for (int i = 1; i <= obj.getTableSize(); ++i) {
@@ -151,11 +153,6 @@ void SpawnAreaMap::loadStaticSpawns() {
 					if (!aiString.isEmpty()) {
 						ai->activateLoad(aiString);
 					}
-				}
-
-				if (name.contains("trainer_")) {
-					Vector3 coords(creatureObject.get()->getWorldPositionX(), creatureObject.get()->getWorldPositionY(), 0);
-					trainerObjects.add(coords);
 				}
 			} else {
 				StringBuffer msg;
@@ -298,9 +295,4 @@ void SpawnAreaMap::readAreaObject(LuaObject& areaObj) {
 		area->setNoBuildArea(true);
 	}
 
-}
-
-Vector3 SpawnAreaMap::getRandomJediTrainer() {
-	uint32 size = trainerObjects.size();
-	return trainerObjects.get(System::random(size - 1));
 }

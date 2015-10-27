@@ -34,7 +34,7 @@
 #include "server/zone/managers/structure/StructureManager.h"
 
 #include "server/zone/managers/creature/CreatureManager.h"
-#include "server/zone/objects/creature/AiAgent.h"
+#include "server/zone/objects/creature/ai/AiAgent.h"
 
 #include "server/zone/objects/installation/InstallationObject.h"
 
@@ -107,13 +107,13 @@ void GCWManagerImplementation::start() {
 	initialize();
 }
 
-void GCWManagerImplementation::loadLuaConfig(){
+void GCWManagerImplementation::loadLuaConfig() {
 	Locker locker(&baseMutex);
 
 	if(maxBases >= 0)
 		return;
 
-	info("Loading gcw configuration file.", true);
+	info("Loading gcw configuration file.");
 
 	Lua* lua = new Lua();
 	lua->init();
@@ -157,7 +157,7 @@ void GCWManagerImplementation::loadLuaConfig(){
 
 	pointsObject.pop();
 
-	info("Loaded " + String::valueOf(baseValue.size()) + " GCW base scoring values.",true);
+	info("Loaded " + String::valueOf(baseValue.size()) + " GCW base scoring values.");
 
 	LuaObject penaltyObject = lua->getGlobalObject("imperial_racial_penalty");
 	if(penaltyObject.isValidTable()){
@@ -174,7 +174,7 @@ void GCWManagerImplementation::loadLuaConfig(){
 
 	penaltyObject.pop();
 
-	info("Loaded " + String::valueOf(racialPenaltyMap.size()) + " racial penalties.",true);
+	info("Loaded " + String::valueOf(racialPenaltyMap.size()) + " racial penalties.");
 
 	LuaObject strongholdsObject = lua->getGlobalObject("strongholdCities");
 	if(strongholdsObject.isValidTable()) {
@@ -197,7 +197,7 @@ void GCWManagerImplementation::loadLuaConfig(){
 
 	strongholdsObject.pop();
 
-	info("Loaded " + String::valueOf(imperialStrongholds.size()) + " imperial strongholds and " + String::valueOf(rebelStrongholds.size()) + " rebel strongholds.",true);
+	info("Loaded " + String::valueOf(imperialStrongholds.size()) + " imperial strongholds and " + String::valueOf(rebelStrongholds.size()) + " rebel strongholds.");
 }
 
 // PRE: Nothing needs to be locked
@@ -669,14 +669,14 @@ void GCWManagerImplementation::performGCWTasks(){
 
 
 #ifdef GCW_DEBUG
-	info("Performing gcw maintenance for "+ zone->getZoneName());
+	info("Performing gcw maintenance");
 #endif
 	int totalBase = gcwBaseList.size();
 	int startCount = gcwStartTasks.size();
 	int endCount = gcwEndTasks.size();
 	int destroyCount = gcwDestroyTasks.size();
 
-	info("Checking " + String::valueOf(totalBase) + " bases on " + zone->getZoneName(), true);
+	info("Checking " + String::valueOf(totalBase) + " bases", true);
 	//info("Size of start list is " + String::valueOf(startCount), true);
 	//info("Size of end list is   " + String::valueOf(endCount),true);
 	//info("Size of destroy list is   " + String::valueOf(destroyCount),true);
@@ -815,19 +815,19 @@ void GCWManagerImplementation::checkVulnerabilityData(BuildingObject* building){
 	if(!vulnTime.isPast()) {
 
 #ifdef GCW_DEBUG
-		info(zone->getZoneName() + " scheduling building " + String::valueOf(building->getObjectID()) + "vulnerability start " + String::valueOf(llabs(endDif)));
+		info("scheduling building " + String::valueOf(building->getObjectID()) + "vulnerability start " + String::valueOf(llabs(endDif)));
 #endif
 		this->scheduleVulnerabilityStart(building);
 	} else if (vulnTime.isPast() && !nextEnd.isPast()) {
 
 #ifdef GCW_DEBUG
-		info(zone->getZoneName() + " loading vulnerable base " + String::valueOf(building->getObjectID()) + " with vulnerability in progress");
+		info("loading vulnerable base " + String::valueOf(building->getObjectID()) + " with vulnerability in progress");
 #endif
 		this->startVulnerability(building);
 	} else if (nextEnd.isPast()) {
 
 #ifdef GCW_DEBUG
-		info(zone->getZoneName() + " base " + String::valueOf(building->getObjectID()) + " vuln end time has already passed... need to refresh next vuln times " + String::valueOf(vulnDif));
+		info("base " + String::valueOf(building->getObjectID()) + " vuln end time has already passed... need to refresh next vuln times " + String::valueOf(vulnDif));
 #endif
 		this->refreshExpiredVulnerability(building);
 
@@ -1107,15 +1107,15 @@ void GCWManagerImplementation::generateTurretControlBoxTo(CreatureObject* creatu
 	StringBuffer msg;
 	msg << "Turret is now targeting: ";
 
-	if(turretData->getTarget() != NULL){
-		msg << turretData->getTarget()->getFirstName();
+	if(turretData->getManualTarget() != NULL){
+		msg << turretData->getManualTarget()->getFirstName();
 	}
 
 	status->setPromptText(msg.toString());
 
 	CloseObjectsVector* vec = (CloseObjectsVector*)turret->getCloseObjects();
 
-	SortedVector<ManagedReference<QuadTreeEntry* > > closeObjects;
+	SortedVector<QuadTreeEntry*> closeObjects;
 
 	vec->safeCopyTo(closeObjects);
 	Reference<WeaponObject*> weapon = turret->getSlottedObject("hold_r").castTo<WeaponObject*>();
@@ -1126,7 +1126,7 @@ void GCWManagerImplementation::generateTurretControlBoxTo(CreatureObject* creatu
 	int targetTotal = 0;
 
 	for(int i = 0; i < closeObjects.size(); ++i){
-		CreatureObject* creo = closeObjects.get(i).castTo<CreatureObject*>();
+		CreatureObject* creo = cast<CreatureObject*>(closeObjects.get(i));
 
 		if(creo != NULL && creo->isAttackableBy(turret)){
 			if(!CollisionManager::checkLineOfSight(creo, turret)){
@@ -1173,13 +1173,13 @@ bool GCWManagerImplementation::canUseTurret(TurretDataComponent* turretData, Tur
 		PlayerObject* controllerGhost = controllerCreature->getPlayerObject();
 
 		// if there is no manual target, give it to the new guy, close it from the old guy
-		if(turretData->getTarget() == NULL) {
+		if(turretData->getManualTarget() == NULL) {
 			// try to close it from the old controller if it's still up
 			controllerGhost->closeSuiWindowType(SuiWindowType::HQ_TURRET_TERMINAL);
 		}else if(controllerGhost != NULL){
 
 			// if the controller creatures has the same window up
-			if(turretData->getTarget() != NULL) {
+			if(turretData->getManualTarget() != NULL) {
 				int controllingSuiBoxID = controlData->getSuiBoxID();
 
 				if(controllingSuiBoxID >= 0){
@@ -2509,32 +2509,60 @@ void GCWManagerImplementation::verifyTurrets(BuildingObject* building){
 	baseData->setDefense(turrets);
 }
 
-bool GCWManagerImplementation::canPlaceMoreBases(CreatureObject* creature){
-	if(creature == NULL || !creature->isPlayerCreature())
+bool GCWManagerImplementation::canPlaceMoreBases(CreatureObject* creature) {
+	if (creature == NULL || !creature->isPlayerCreature())
 		return false;
 
 	PlayerObject* ghost = creature->getPlayerObject();
-	if(ghost == NULL)
+	if (ghost == NULL)
 		return false;
-	if(zone == NULL || zone->getZoneServer() == NULL)
+
+	if (zone == NULL)
 		return false;
 
 	ZoneServer* server = zone->getZoneServer();
-	int baseCount = 0;
-	for(int i =0; i < ghost->getTotalOwnedStructureCount(); ++i){
-		ManagedReference<SceneObject*> structure = server->getObject(ghost->getOwnedStructure(i));
-		if(structure != NULL && structure->isGCWBase())
-			baseCount++;
+	if (server == NULL)
+		return false;
 
+	int baseCount = 0;
+	for (int i =0; i < ghost->getTotalOwnedStructureCount(); ++i) {
+		ManagedReference<SceneObject*> structure = server->getObject(ghost->getOwnedStructure(i));
+
+		if (structure != NULL && structure->isGCWBase())
+			baseCount++;
 	}
 
-	if(baseCount >= maxBasesPerPlayer){
+	if (baseCount >= maxBasesPerPlayer) {
 		creature->sendSystemMessage("You own " + String::valueOf(baseCount) + " bases.  The maximum amount is " + String::valueOf(maxBasesPerPlayer));
 		return false;
 	}
 
 	return true;
 
+}
+
+bool GCWManagerImplementation::hasTooManyBasesNearby(int x, int y) {
+	if (zone == NULL)
+		return true;
+
+	SortedVector<QuadTreeEntry*> inRangeObjects;
+	zone->getInRangeObjects(x, y, 600, &inRangeObjects, true);
+	int count = 0;
+
+	for (int i = 0; i < inRangeObjects.size(); ++i) {
+		SceneObject* scene = cast<SceneObject*>(inRangeObjects.get(i));
+
+		if (scene == NULL)
+			continue;
+
+		if (scene->isGCWBase())
+			count++;
+	}
+
+	if (count >= 3)
+		return true;
+
+	return false;
 }
 
 bool GCWManagerImplementation::canUseTerminals(CreatureObject* creature, BuildingObject* building, SceneObject* terminal){
@@ -2584,7 +2612,7 @@ void GCWManagerImplementation::broadcastBuilding(BuildingObject* building, Strin
 	if(zone == NULL)
 		return;
 
-	SortedVector<ManagedReference<QuadTreeEntry*> > closeObjects;
+	SortedVector<QuadTreeEntry*> closeObjects;
 	if (building->getCloseObjects() == NULL) {
 		building->info("Null closeobjects vector in GCWManagerImplementation::broadcastBuilding", true);
 		zone->getInRangeObjects(building->getPositionX(), building->getPositionY(), range, &closeObjects, true);
@@ -2595,7 +2623,7 @@ void GCWManagerImplementation::broadcastBuilding(BuildingObject* building, Strin
 
 	// send message to all the players in range
 	for (int i = 0; i < closeObjects.size(); i++) {
-		SceneObject* targetObject = cast<SceneObject*>(closeObjects.get(i).get());
+		SceneObject* targetObject = cast<SceneObject*>(closeObjects.get(i));
 
 		if (targetObject->isPlayerCreature() && building->isInRange(targetObject, range)) {
 			CreatureObject* targetPlayer = cast<CreatureObject*>(targetObject);

@@ -136,6 +136,7 @@ public:
 		ADMIN_GUILDINFO                    = 183,
 		ADMIN_JEDILIST                     = 184,
 		ADMIN_LIST                     	   = 185,
+		ADMIN_FIND_PLAYER                  = 186,
 
 		//Teach 221 - 230
 		TEACH_SKILL                        = 221,
@@ -183,6 +184,9 @@ public:
 
 		// Reaction Fines
 		REACTION_FINE                      = 331,
+
+		// Growable Plant
+		GROWABLE_PLANT					   = 341,
 
 		// Ranger 400 - 401
 		RANGER_TRACK_OPTIONS               = 400,

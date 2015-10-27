@@ -112,7 +112,7 @@ public:
 
 		do {
 			for (int i = 0; i < 10; i++) {
-				position = player->getWorldCoordinate(distance + System::random(20), angle - System::random(2 * angle));
+				position = player->getWorldCoordinate(distance + System::random(20), angle - System::random(2 * angle), true);
 
 				if (noInterferingObjects(player, position)) {
 					return position;
@@ -132,11 +132,11 @@ public:
 		if (vec == NULL)
 			return true;
 
-		SortedVector<ManagedReference<QuadTreeEntry* > > closeObjects;
+		SortedVector<QuadTreeEntry*> closeObjects;
 		vec->safeCopyTo(closeObjects);
 
 		for (int j = 0; j < closeObjects.size(); j++) {
-			SceneObject* obj = cast<SceneObject*>(closeObjects.get(j).get());
+			SceneObject* obj = cast<SceneObject*>(closeObjects.get(j));
 
 			SharedObjectTemplate* objectTemplate = obj->getObjectTemplate();
 

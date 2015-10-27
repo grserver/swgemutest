@@ -18,9 +18,10 @@ int SaberInventoryContainerComponent::canAddObject(SceneObject* sceneObject, Sce
 
 	if (p != NULL){
 		int containment = p->getContainmentType();
-		if (containment == 4){
-		errorDescription = "@jedi_spam:saber_not_while_equpped";
-		return TransferErrorCode::INVALIDTYPE;
+
+		if (containment == 4) {
+			errorDescription = "@jedi_spam:saber_not_while_equpped";
+			return TransferErrorCode::INVALIDTYPE;
 		}
 	}
 
@@ -31,14 +32,14 @@ int SaberInventoryContainerComponent::canAddObject(SceneObject* sceneObject, Sce
 
 	LightsaberCrystalComponent* crystal = cast<LightsaberCrystalComponent*> (object);
 
-	if (crystal->getOwner() == ""){
+	if (crystal->getOwnerID() == 0) {
 		errorDescription = "@jedi_spam:saber_crystal_not_tuned";
 		return TransferErrorCode::INVALIDTYPE;
 	}
 
-	ManagedReference<CreatureObject*> creature = cast<CreatureObject*>(object->getParent().get().get());
+	ManagedReference<CreatureObject*> creature = cast<CreatureObject*>(crystal->getParentRecursively(SceneObjectType::PLAYERCREATURE).get().get());
 
-	if (creature != NULL && crystal->getOwner() != creature->getDisplayedName()){
+	if (creature == NULL || crystal->getOwnerID() != creature->getObjectID()){
 		errorDescription = "@jedi_spam:saber_crystal_not_owner";
 		return TransferErrorCode::INVALIDTYPE;
 	}
@@ -133,4 +134,25 @@ int SaberInventoryContainerComponent::notifyObjectRemoved(SceneObject* sceneObje
 		}
 
 	return sceneObject->notifyObjectRemoved(object);
+}
+
+bool SaberInventoryContainerComponent::checkContainerPermission(SceneObject* sceneObject, CreatureObject* creature, uint16 permission) {
+	ManagedReference<WeaponObject*> saber = cast<WeaponObject*>( sceneObject->getParent().get().get());
+
+	if (saber == NULL)
+		return false;
+
+
+	if (saber->isJediWeapon() && saber->isEquipped()) {
+		CreatureObject* player = saber->getParentRecursively(SceneObjectType::PLAYERCREATURE).get().castTo<CreatureObject*>();
+
+		if (player == NULL)
+			return false;
+
+		player->sendSystemMessage("@jedi_spam:saber_not_while_equpped"); // You cannot modify the crystals in this lightsaber while it is equipped.
+
+		return false;
+	}
+
+	return ContainerComponent::checkContainerPermission(sceneObject, creature, permission);
 }

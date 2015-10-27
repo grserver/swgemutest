@@ -10,7 +10,7 @@
 #include "server/zone/managers/loot/LootManager.h"
 #include "server/zone/objects/scene/SceneObject.h"
 #include "server/zone/objects/creature/CreatureObject.h"
-#include "server/zone/objects/creature/AiAgent.h"
+#include "server/zone/objects/creature/ai/AiAgent.h"
 #include "server/zone/managers/crafting/CraftingManager.h"
 #include "server/zone/managers/templates/TemplateManager.h"
 #include "server/zone/templates/LootItemTemplate.h"
@@ -313,11 +313,7 @@ TangibleObject* LootManagerImplementation::createLootObject(LootItemTemplate* te
 		if (min == max)
 			continue;
 
-		if (subtitle != "useCount" &&
-				subtitle != "quantity" &&
-				subtitle != "charges" &&
-				subtitle != "uses" &&
-				subtitle != "charge") {
+		if (subtitle != "forcecost" && subtitle != "useCount" && subtitle != "quantity" && subtitle != "charges" && subtitle != "uses" && subtitle != "charge") {
 
 			float minMod = (max > min) ? 2000.f : -2000.f;
 			float maxMod = (max > min) ? 500.f : -500.f;
@@ -353,13 +349,13 @@ TangibleObject* LootManagerImplementation::createLootObject(LootItemTemplate* te
 				max = ((max * level / maxMod) + max) * excMod;
 			}
 		} else {
-			if (excMod != 1.0) {
+			if (subtitle != "forcecost" && excMod != 1.0) {
 				min *= yellowModifier;
 				max *= yellowModifier;
 			}
 		}
 
-		if (excMod == 1.0 && (yellowChance == 0 || System::random(yellowChance) == 0)) {
+		if (subtitle != "forcecost" && excMod == 1.0 && (yellowChance == 0 || System::random(yellowChance) == 0)) {
 			if (max > min && min >= 0) {
 				min *= yellowModifier;
 				max *= yellowModifier;

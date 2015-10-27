@@ -35,6 +35,7 @@ public:
 	int removeWaypoint(lua_State* L);
 	int removeWaypointBySpecialType(lua_State* L);
 	int addRewardedSchematic(lua_State* L);
+	int removeRewardedSchematic(lua_State* L);
 	int addPermissionGroup(lua_State* L);
 	int removePermissionGroup(lua_State* L);
 	int hasPermissionGroup(lua_State* L);
@@ -55,6 +56,7 @@ public:
 	int setCompletedQuestsBit(lua_State* L);
 	int clearCompletedQuestsBit(lua_State* L);
 	int hasAbility(lua_State* L);
+	int addAbility(lua_State* L);
 	int getExperience(lua_State* L);
 	int addEventPerk(lua_State* L);
 	int getEventPerkCount(lua_State* L);

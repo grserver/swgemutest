@@ -10,7 +10,7 @@
 
 #include "engine/engine.h"
 #include "server/zone/objects/creature/CreatureObject.h"
-#include "server/zone/objects/creature/NonPlayerCreatureObject.h"
+#include "server/zone/objects/creature/ai/NonPlayerCreatureObject.h"
 #include "server/zone/objects/creature/VehicleObject.h"
 #include "server/zone/objects/tangible/weapon/WeaponObject.h"
 #include "server/zone/objects/tangible/wearables/ArmorObject.h"
@@ -47,6 +47,7 @@ public:
 	const static int WEAPONTRAIL = 0x10;
 	const static int DEFAULTTRAIL = 0xFF;
 
+	const static int NONE = 0;
 	const static int HEALTH = 1;
 	const static int ACTION = 2;
 	const static int MIND = 4;

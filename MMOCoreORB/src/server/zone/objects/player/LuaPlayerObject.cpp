@@ -11,6 +11,7 @@
 #include "server/zone/managers/crafting/schematicmap/SchematicMap.h"
 #include "server/zone/objects/tangible/deed/eventperk/EventPerkDeed.h"
 #include "server/zone/objects/tangible/eventperk/Jukebox.h"
+#include "server/zone/managers/skill/SkillManager.h"
 
 const char LuaPlayerObject::className[] = "LuaPlayerObject";
 
@@ -28,6 +29,7 @@ Luna<LuaPlayerObject>::RegType LuaPlayerObject::Register[] = {
 		{ "removeWaypoint", &LuaPlayerObject::removeWaypoint },
 		{ "removeWaypointBySpecialType", &LuaPlayerObject::removeWaypointBySpecialType },
 		{ "addRewardedSchematic", &LuaPlayerObject::addRewardedSchematic },
+		{ "removeRewardedSchematic", &LuaPlayerObject::removeRewardedSchematic },
 		{ "addPermissionGroup", &LuaPlayerObject::addPermissionGroup },
 		{ "removePermissionGroup", &LuaPlayerObject::removePermissionGroup },
 		{ "hasPermissionGroup", &LuaPlayerObject::hasPermissionGroup },
@@ -48,6 +50,7 @@ Luna<LuaPlayerObject>::RegType LuaPlayerObject::Register[] = {
 		{ "setCompletedQuestsBit", &LuaPlayerObject::setCompletedQuestsBit },
 		{ "clearCompletedQuestsBit", &LuaPlayerObject::clearCompletedQuestsBit },
 		{ "hasAbility", &LuaPlayerObject::hasAbility},
+		{ "addAbility", &LuaPlayerObject::addAbility},
 		{ "getExperience", &LuaPlayerObject::getExperience },
 		{ "addEventPerk", &LuaPlayerObject::addEventPerk},
 		{ "getEventPerkCount", &LuaPlayerObject::getEventPerkCount},
@@ -231,6 +234,18 @@ int LuaPlayerObject::addRewardedSchematic(lua_State* L){
 	return 0;
 }
 
+int LuaPlayerObject::removeRewardedSchematic(lua_State* L){
+	String templateString = lua_tostring(L, -2);
+	bool notifyClient = lua_toboolean(L, -1);
+
+	DraftSchematic* schematic = SchematicMap::instance()->get(templateString.hashCode());
+
+	if (schematic != NULL)
+		realObject->removeRewardedSchematic(schematic, notifyClient);
+
+	return 0;
+}
+
 int LuaPlayerObject::addPermissionGroup(lua_State* L){
 	String permissionGroup = lua_tostring(L, -2);
 	bool updateBuildings = lua_toboolean(L, -1);
@@ -408,6 +423,18 @@ int LuaPlayerObject::hasAbility(lua_State* L) {
 	bool check = realObject->hasAbility(value);
 
 	lua_pushboolean(L, check);
+
+	return 1;
+
+}
+
+int LuaPlayerObject::addAbility(lua_State* L) {
+	String value = lua_tostring(L, -1);
+
+	SkillManager* skillManager = SkillManager::instance();
+
+	if (!realObject->hasAbility(value))
+		skillManager->addAbility(realObject, value);
 
 	return 1;
 

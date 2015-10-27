@@ -155,7 +155,12 @@ void GroupObjectImplementation::removeMember(SceneObject* member) {
 			PlayerObject* ghost = playerCreature->getPlayerObject();
 			ghost->removeWaypointBySpecialType(WaypointObject::SPECIALTYPE_NEARESTMISSIONFORGROUP);
 		}
-		scheduleUpdateNearestMissionForGroup(playerCreature->getPlanetCRC());
+
+		Zone* zone = playerCreature->getZone();
+
+		if (zone != NULL) {
+			scheduleUpdateNearestMissionForGroup(zone->getPlanetCRC());
+		}
 	}
 
 	calcGroupLevel();
@@ -483,6 +488,22 @@ void GroupObjectImplementation::sendSystemMessage(const String& fullPath, bool s
 
 		CreatureObject* creature = cast<CreatureObject*>(obj.get());
 		creature->sendSystemMessage(fullPath);
+	}
+}
+
+void GroupObjectImplementation::sendSystemMessage(StringIdChatParameter& param, CreatureObject* excluded) {
+	Locker lock(_this.getReferenceUnsafeStaticCast());
+
+	for (int i = 0; i < groupMembers.size(); ++i) {
+		GroupMember* member = &groupMembers.get(i);
+
+		ManagedReference<SceneObject*> obj = member->get();
+
+		if (obj == NULL || !obj->isPlayerCreature() || obj == excluded)
+			continue;
+
+		CreatureObject* creature = cast<CreatureObject*>(obj.get());
+		creature->sendSystemMessage(param);
 	}
 }
 

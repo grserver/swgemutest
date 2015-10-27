@@ -109,7 +109,10 @@ class CreatureObject extends TangibleObject {
 	protected GroupObject group;
 	protected unsigned long groupInviterID;
 	protected unsigned long groupInviteCounter;
+
+	@weakReference
 	protected GuildObject guild;
+
 	protected unsigned long targetID;
 	protected byte moodID;
 	protected int performanceCounter;
@@ -269,16 +272,6 @@ class CreatureObject extends TangibleObject {
 	 */
 	@dirty
 	public native void sendToOwner(boolean doClose = true);
-
-	/**
-	 * Sends the necessary messages to player in order to create this object
-	 * @pre { this object is locked }
-	 * @post { this object is locked, player received this object }
-	 * @param player SceneObject that will receive the messages
-	 * @param doClose if true a SceneObjectCloseMessage is sent to finish the object
-	 */
-	@dirty
-	public native void sendTo(SceneObject player, boolean doClose);
 
 	/**
 	 * Sends a system message to the client of this object
@@ -1046,7 +1039,13 @@ class CreatureObject extends TangibleObject {
 	public native boolean isAttackableBy(CreatureObject object);
 
 	@dirty
-	public native boolean isAttackableBy(TangibleObject attacker);
+	public native boolean isAttackableBy(CreatureObject object, boolean bypassDeadCheck);
+
+	@dirty
+	public native abstract boolean isAttackableBy(TangibleObject attacker);
+
+	@dirty
+	public native boolean isAttackableBy(TangibleObject object, boolean bypassDeadCheck);
 
 	@dirty
 	public native boolean isHealableBy(CreatureObject object);
@@ -1266,7 +1265,7 @@ class CreatureObject extends TangibleObject {
 	public native void setMeditateState();
 
 	@preLocked
-	public abstract native void activateHAMRegeneration();
+	public abstract native void activateHAMRegeneration(int latency);
 
 	@preLocked
 	public abstract native void activatePassiveWoundRegeneration();
@@ -1652,7 +1651,7 @@ class CreatureObject extends TangibleObject {
 	@preLocked
 	public native WeaponObject getWeapon();
 
-	@reference
+	@weakReference
 	@read
 	public GuildObject getGuildObject() {
 		return guild;
@@ -1660,15 +1659,19 @@ class CreatureObject extends TangibleObject {
 
 	@read
 	public int getGuildID() {
-		if (guild == null)
+		GuildObject strongRef = guild;
+
+		if (strongRef != null)
+			return strongRef.getGuildID();
+		else
 			return 0;
-		
-		return guild.getGuildID();
 	}
 
 	@read
 	public boolean isInGuild() {
-		return guild != null;
+		GuildObject strongRef = guild;
+
+		return strongRef != null;
 	}
 
 	@preLocked

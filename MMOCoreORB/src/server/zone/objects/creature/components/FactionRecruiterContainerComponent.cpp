@@ -1,7 +1,7 @@
 
 #include "FactionRecruiterContainerComponent.h"
 #include "server/chat/ChatManager.h"
-#include "server/zone/objects/creature/AiAgent.h"
+#include "server/zone/objects/creature/ai/AiAgent.h"
 #include "server/zone/objects/player/PlayerObject.h"
 #include "server/zone/objects/tangible/components/generic/CoaMessageDataComponent.h"
 #include "server/zone/managers/player/BadgeList.h"
@@ -110,6 +110,8 @@ bool FactionRecruiterContainerComponent::transferObject(SceneObject* sceneObject
 	if (!hasBadge) {
 		ghost->awardBadge(badge->getIndex());
 		ghost->increaseFactionStanding(recruiterFaction, 500);
+		String mailPrefix = "@theme_park/alderaan/act2/rebel_missions:email_";
+		zoneServer->getChatManager()->sendMail(mailPrefix + "subject", mailPrefix + "subject", mailPrefix + "body", player->getFirstName());
 	}
 
 	return true;
