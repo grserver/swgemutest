@@ -41,7 +41,7 @@
 --which carries forward this exception.
 
 --Time, in seconds, that a shuttle is away for
-shuttleportAwayTime = 300
+shuttleportAwayTime = 120
 starportAwayTime = 60
 
 --Time, in seconds, that a shuttle takes to land
@@ -444,4 +444,39 @@ tutorial = {
 dungeon1 = {
 	weatherEnabled = 0,
 	gcwEnabled = 0,
+}
+
+kaas = {
+	weatherEnabled = 1,
+	gcwEnabled = 1,
+	
+			planetTravelPoints = {
+		{name = "Starport", x = -5174.0, z = 80, y = -2218, interplanetaryTravelAllowed = 1, incomingTravelAllowed = 1}
+	},
+	
+    planetObjects = {
+	--	{templateFile = "object/tangible/terminal/terminal_character_builder.iff", ox = 0, oy = 0.996369, oz = 0, ow = -0.0851417, x = 4447.08, z = 2, y = 5286.96, parentid = 0},
+	--	{templateFile = "object/tangible/terminal/terminal_character_builder.iff", ox = 0, oy = 0.692641, oz = 0, ow = 0.721282, x = 329.666, z = 6, y = -2924.69, parentid = 0},
+	    {templateFile = "object/tangible/jedi/force_shrine_stone.iff", ox = 0, oy = -0.664289, oz = 0, ow = 0.747476, x = -5135.4, z = 82.1, y = -1895.0, parentid = 0},
+		{templateFile = "object/static/structure/dantooine/dant_jedi_temple_altar.iff", ox = 0, oy = -0.664289, oz = 0, ow = 0.747476, x = -5135.4, z = 82.1, y = -1895.0, parentid = 0}
+	}
+}
+
+taanab = {
+	weatherEnabled = 1,
+	gcwEnabled = 1,
+
+		planetTravelPoints = {
+		{name = "North Starport", x = -474, z = 58, y = 5849, interplanetaryTravelAllowed = 1, incomingTravelAllowed = 1},
+		{name = "South Starport", x = -3237, z = 53, y = -5707, interplanetaryTravelAllowed = 1, incomingTravelAllowed = 1}
+	}
+}
+ghomrassen = {
+	weatherEnabled = 1,
+	gcwEnabled = 1,
+
+		planetTravelPoints = {
+		{name = "Mos Rassen", x = -3407, z = 0, y = -5199, interplanetaryTravelAllowed = 1, incomingTravelAllowed = 1},
+		{name = "Mos Rassen Shuttleport", x = -3198, z = 0, y = -5294, interplanetaryTravelAllowed = 1, incomingTravelAllowed = 1}
+	}
 }

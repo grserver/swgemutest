@@ -228,8 +228,42 @@ yavin4 = {
 	weatherStability = 70, -- Range 0 - 100, Higher = Less weather changes, Overall better weather
 }
 
+-----------------
+--    Taanab
+-----------------
+taanab = {
 
+	defaultWeather = 4, -- Sunny
 
+	averageWeatherDuration = 3600, -- In seconds
 
+	weatherStability = 50, -- Range 0 - 100, Higher = Less weather changes, Overall better weather
+}
+-----------------
+--    Ghomrassen
+-----------------
+ghomrassen = {
 
+	defaultWeather = 0, -- Sunny
+
+	averageWeatherDuration = 3600, -- In seconds
+
+	weatherStability = 30, -- Range 0 - 100, Higher = Less weather changes, Overall better weather
+
+	hasDamagingSandstorms = 1,
+
+	sandstormDamage = 50, -- 30 = Annoying, 50 = deadly
+}
+
+-----------------
+--    Kaas
+-----------------
+kaas = {
+
+	defaultWeather = 4, -- Sunny
+
+	averageWeatherDuration = 3600, -- In seconds
+
+	weatherStability = 50, -- Range 0 - 100, Higher = Less weather changes, Overall better weather
+}
 
