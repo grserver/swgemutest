@@ -1,4 +1,4 @@
-gambler = Creature:new {
+ghom_gambler = Creature:new {
 	objectName = "@mob/creature_names:gambler",
 	socialGroup = "thug",
 	faction = "thug",
@@ -35,4 +35,4 @@ gambler = Creature:new {
 	attacks = merge(marksmannovice,brawlernovice)
 }
 
-CreatureTemplates:addCreatureTemplate(gambler, "gambler")
+CreatureTemplates:addCreatureTemplate(ghom_gambler, "ghom_gambler")

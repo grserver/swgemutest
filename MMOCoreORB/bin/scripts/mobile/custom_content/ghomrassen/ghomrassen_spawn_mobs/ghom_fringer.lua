@@ -1,4 +1,4 @@
-fringer = Creature:new {
+ghom_fringer = Creature:new {
 	objectName = "@mob/creature_names:fringer",
 	socialGroup = "mercenary",
 	faction = "",
@@ -48,4 +48,4 @@ fringer = Creature:new {
 	attacks = merge(marksmannovice,brawlernovice)
 }
 
-CreatureTemplates:addCreatureTemplate(fringer, "fringer")
+CreatureTemplates:addCreatureTemplate(ghom_fringer, "ghom_fringer")

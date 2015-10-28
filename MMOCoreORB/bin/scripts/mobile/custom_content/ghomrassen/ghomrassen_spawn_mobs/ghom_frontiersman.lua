@@ -1,5 +1,5 @@
-frontiersman = Creature:new {
-	objectName = "",
+ghom_frontiersman = Creature:new {
+	--objectName = "",
 	customName = "Frontiersman",
 	socialGroup = "wilder",
 	faction = "",
@@ -45,4 +45,4 @@ frontiersman = Creature:new {
 	attacks = merge(brawlermaster,marksmanmaster)
 }
 
-CreatureTemplates:addCreatureTemplate(frontiersman, "frontiersman")
+CreatureTemplates:addCreatureTemplate(ghom_frontiersman, "ghom_frontiersman")
