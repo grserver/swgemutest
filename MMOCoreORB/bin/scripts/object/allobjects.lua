@@ -40,11 +40,6 @@
 --this exception also makes it possible to release a modified version 
 --which carries forward this exception.
 
-
-
---Stock files from here.
---*******************************************************************************************************************
-
 includeFile("object.lua")
 includeFile("SharedObjectTemplate.lua")
 includeFile("SharedTangibleObjectTemplate.lua")
@@ -120,7 +115,22 @@ includeFile("creature/npc/objects.lua")
 includeFile("creature/player/base/objects.lua")
 includeFile("creature/player/objects.lua")
 includeFile("creature/objects.lua")
+includeFile("custom_content/building/kashyyyk/objects.lua")
+includeFile("custom_content/building/player/objects.lua")
+includeFile("custom_content/draft_schematic/structure/objects.lua")
+includeFile("custom_content/intangible/vehicle/objects.lua")
+includeFile("custom_content/mobile/ep3/objects.lua")
 includeFile("custom_content/mobile/som/objects.lua")
+includeFile("custom_content/mobile/vehicle/objects.lua")
+includeFile("custom_content/tangible/deed/player_house_deed/objects.lua")
+includeFile("custom_content/tangible/deed/vehicle_deed/objects.lua")
+includeFile("custom_content/tangible/wearables/armor/assault_trooper/objects.lua")
+includeFile("custom_content/tangible/wearables/armor/clone_trooper/objects.lua")
+includeFile("custom_content/tangible/wearables/armor/scout_trooper/objects.lua")
+includeFile("custom_content/tangible/wearables/backpack/objects.lua")
+includeFile("custom_content/tangible/wearables/robe/objects.lua")
+includeFile("custom_content/weapon/melee/objects.lua")
+includeFile("custom_content/weapon/ranged/objects.lua")
 includeFile("draft_schematic/armor/component/objects.lua")
 includeFile("draft_schematic/armor/objects.lua")
 includeFile("draft_schematic/base/objects.lua")
