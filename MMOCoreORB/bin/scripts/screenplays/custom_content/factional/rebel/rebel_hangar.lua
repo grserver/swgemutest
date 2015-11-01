@@ -58,7 +58,7 @@ npcMapRebelHangar =
 	{
 		spawnData = { planetName = "rori", npcTemplate = "major_eston", x = 3655.7, z = 96, y = -6472.6, direction = 90, cellID = 0, position = STAND },
 		npcNumber = 1,
-		--stfFile = "@static_npc/rori/major_eston",
+		stfFile = "@static_npc/rori/major_eston",
 		missions = major_eston_missions
 	},
 	
@@ -75,34 +75,13 @@ RebelHangar = ThemeParkLogic:new {
 
 registerScreenPlay("RebelHangar", true)
 
-rebel_hanger_convo_handler = Object:new {
-	tstring = "myconversation"
- }
+rebel_hangar_mission_giver_conv_handler = mission_giver_conv_handler:new {
+	themePark = RebelHangar
+}
+rebel_hangar_mission_target_conv_handler = mission_target_conv_handler:new {
+	themePark = RebelHangar
+}
 
-function rebel_hanger_convo_handler:getNextConversationScreen(conversationTemplate, conversingPlayer, selectedOption)
-	--nextConversationScreen = MerchantSystem:nextConvoScreenInnards(conversationTemplate, conversingPlayer, selectedOption)
-	
-	return nextConversationScreen
-end
-
-function rebel_hanger_convo_handler:runScreenHandlers(conversationTemplate, conversingPlayer, conversingNPC, selectedOption, conversationScreen)
-	--conversationScreen = MerchantSystem:runScreenHandlerInnards(conversationTemplate, conversingPlayer, conversingNPC, selectedOption, conversationScreen)
-	
-	return conversationScreen
-end
-
---rebel_hanger_quest_eston = EstonConvoHandler:new {
---	themePark = RebelHangar
---}
-
--- Overrides themepark logic to allow custom function to be called to be called
---function RebelHangar:start()
---	if (isZoneEnabled("rori")) then
---		RebelHangar:spawnNpcs()
---		self:spawnSceneObjects()
---		self:permissionObservers()
---	end
---end
 
 
 
