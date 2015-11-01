@@ -5,7 +5,7 @@ require("corvetteTicketGiverLogic")
 require("corvetteTicketTakerLogic")
 
 --New Content
-includeFile("custom_content/screenplays.lua")
+
 
 -- Theme parks
 includeFile("themepark/conversations/goru_conv_handler.lua")
@@ -384,3 +384,4 @@ includeFile("space/space_chassis_dealer_conv_handler.lua")
 
 -- Record Keepers
 includeFile("record_keepers/record_keepers.lua")
+includeFile("custom_content/screenplays.lua")
