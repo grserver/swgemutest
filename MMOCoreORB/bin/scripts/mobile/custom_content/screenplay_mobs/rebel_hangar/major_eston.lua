@@ -6,11 +6,10 @@ major_eston = Creature:new {
 	chanceHit = 0.36,
 	damageMin = 2500,
 	damageMax = 2600,
-	baseXp = 72730,
+	baseXp = 0,
 	baseHAM = 77750,
-	baseHAMmax = 9400,
+	baseHAMmax = 97400,
 	armor = 0,
-	resists = {-1,-1,-1,-1,-1,-1,-1,-1,-1},
 	meatType = "",
 	meatAmount = 0,
 	hideType = "",
@@ -28,11 +27,6 @@ major_eston = Creature:new {
 	templates = {
 		"object/mobile/dressed_rebel_major_zabrak_female_01.iff",
 	},
-	weapons = {""},
-	conversationTemplate = "rebel_hangar_mission_giver_convotemplate",
-	reactionStf = "",
-	personalityStf = ""
-
+	conversationTemplate = "estonConvoTemplate"
 }
-
 CreatureTemplates:addCreatureTemplate(major_eston, "major_eston")

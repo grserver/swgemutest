@@ -1,3 +1,6 @@
+--Factional
+includeFile("custom_content/conversations/factional/eston_conv.lua")
+
 --Racetracks
 includeFile("custom_content/conversations/racetracks/mosrassenconversation.lua")
 

@@ -75,9 +75,41 @@ RebelHangar = ThemeParkLogic:new {
 
 registerScreenPlay("RebelHangar", true)
 
-rebel_hangar_mission_giver_conv_handler = mission_giver_conv_handler:new {
+rebel_hanger_quest_eston = mission_giver_conv_handler:new {
 	themePark = RebelHangar
 }
-rebel_hangar_mission_target_conv_handler = mission_target_conv_handler:new {
+rebel_hanger_quest_eston = mission_target_conv_handler:new {
 	themePark = RebelHangar
 }
+
+
+--rebel_hanger_quest_eston = EstonConvoHandler:new {
+--	themePark = RebelHangar
+--}
+
+-- Overrides themepark logic to allow custom function to be called to be called
+--function RebelHangar:start()
+--	if (isZoneEnabled("rori")) then
+--		RebelHangar:spawnNpcs()
+--		self:spawnSceneObjects()
+--		self:permissionObservers()
+--	end
+--end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
