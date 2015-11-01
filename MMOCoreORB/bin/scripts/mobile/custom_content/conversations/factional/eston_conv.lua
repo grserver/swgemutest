@@ -1,7 +1,7 @@
 estonConvoTemplate = ConvoTemplate:new {
 	initialScreen = "",
 	templateType = "Lua",
-	luaClassHandler = "rebel_hanger_quest_eston",
+	luaClassHandler = "rebel_hanger_convo_handler",
 	screens = {}
 }
 
