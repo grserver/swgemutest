@@ -80,13 +80,13 @@ rebel_hanger_convo_handler = Object:new {
  }
 
 function rebel_hanger_convo_handler:getNextConversationScreen(conversationTemplate, conversingPlayer, selectedOption)
-	nextConversationScreen = MerchantSystem:nextConvoScreenInnards(conversationTemplate, conversingPlayer, selectedOption)
+	--nextConversationScreen = MerchantSystem:nextConvoScreenInnards(conversationTemplate, conversingPlayer, selectedOption)
 	
 	return nextConversationScreen
 end
 
 function rebel_hanger_convo_handler:runScreenHandlers(conversationTemplate, conversingPlayer, conversingNPC, selectedOption, conversationScreen)
-	conversationScreen = MerchantSystem:runScreenHandlerInnards(conversationTemplate, conversingPlayer, conversingNPC, selectedOption, conversationScreen)
+	--conversationScreen = MerchantSystem:runScreenHandlerInnards(conversationTemplate, conversingPlayer, conversingNPC, selectedOption, conversationScreen)
 	
 	return conversationScreen
 end

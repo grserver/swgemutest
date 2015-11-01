@@ -1,13 +1,13 @@
 estonConvoTemplate = ConvoTemplate:new {
 	initialScreen = "",
 	templateType = "Lua",
-	luaClassHandler = "rebel_hanger_convo_handler",
+	luaClassHandler = "convoHandler",
 	screens = {}
 }
 
 
-npc_1_1 = ConvoScreen:new {
-	id = "npc_1_1",
+first_screen = ConvoScreen:new {
+	id = "first_screen",
 	leftDialog = "",
 	customDialogText = "Hi, you wanna go and do something for me? It'll be fun.",
 	stopConversation = "false",
@@ -17,7 +17,7 @@ npc_1_1 = ConvoScreen:new {
 		{"No thank you.", "npc_reset"},
 	}
 }
-estonConvoTemplate:addScreen(npc_1_1);
+estonConvoTemplate:addScreen(first_screen);
 
 npc_2_1 = ConvoScreen:new {
 	id = "npc_2_1",
