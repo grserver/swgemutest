@@ -37,7 +37,7 @@ rh_imperial_sergeant = Creature:new {
 	lootGroups = {
 					{
 						groups = {
-								{group = "task_loot_rebel_shield_parts", chance = 10000000},
+								{group = "task_loot_rebel_shield_part", chance = 10000000},
 				
 								},
 			lootChance = 10000000
