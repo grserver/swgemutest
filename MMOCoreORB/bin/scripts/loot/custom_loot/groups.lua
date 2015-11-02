@@ -48,6 +48,8 @@ includeFile("custom_loot/groups/player_house_deeds/g_vipbunker_house_loot_deed.l
 includeFile("custom_loot/groups/player_house_deeds/g_yoda_house_loot_deed.lua")
 includeFile("custom_loot/groups/player_house_deeds/g_yt1300_house_loot_deed.lua")
 
+includeFile("custom_loot/groups/task_loot/task_loot_rebel_shield_part.lua")
+
 includeFile("custom_loot/groups/vehicle_loot_deeds/barc_speeder_deed_group.lua")   
 
 includeFile("custom_loot/groups/weapons/melee/g_2h_sword_battleaxe.lua")                         
