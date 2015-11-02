@@ -21,12 +21,15 @@ major_eston = Creature:new {
 	ferocity = 0,
 	pvpBitmask = NONE,
 	creatureBitmask = NONE,
-	optionsBitmask = 136,
+	optionsBitmask = 264,
 	diet = HERBIVORE,
 
 	templates = {
 		"object/mobile/dressed_rebel_major_zabrak_female_01.iff",
 	},
+	
+
+
 	conversationTemplate = "rebel_hangar_mission_giver_convotemplate"
 }
 CreatureTemplates:addCreatureTemplate(major_eston, "major_eston")
