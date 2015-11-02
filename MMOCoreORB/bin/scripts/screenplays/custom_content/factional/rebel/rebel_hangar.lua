@@ -14,7 +14,7 @@ major_eston_missions =
 		},
 		itemSpawns =
 		{
-			{ itemTemplate = "object/tangible/mission/mission_datadisk.iff", itemName = "Encrypted Datadisk" }
+			{ itemTemplate = "object/tangible/mission/eston_q1_needed.iff", itemName = "" }
 		},
 		rewards =
 		{

@@ -41,8 +41,8 @@
 --this exception also makes it possible to release a modified version 
 
 
+object_tangible_mission_quest_item_eston_q1_needed = object_tangible_mission_quest_item_shared_eston_q1_needed:new {
 
---Children folder includes
-includeFile("custom_content/tangible/deed/serverobjects.lua")
-includeFile("custom_content/tangible/mission/serverobjects.lua")
-includeFile("custom_content/tangible/wearables/serverobjects.lua")
+}
+
+ObjectTemplates:addTemplate(object_tangible_mission_quest_item_eston_q1_needed, "object/tangible/mission/quest_item/eston_q1_needed.iff")
