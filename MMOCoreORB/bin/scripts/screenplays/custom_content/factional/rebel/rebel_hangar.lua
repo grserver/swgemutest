@@ -4,17 +4,22 @@ major_eston_missions =
 		missionType = "confiscate",
 		primarySpawns =
 		{
-			{ npcTemplate = "gruthashaal", planetName = "rori", npcName = "Gruthashaal" }
+			{ npcTemplate = "rh_imperial_sergeant", planetName = "rori", npcName = "" }
 		},
 		secondarySpawns =
 		{
+			{ npcTemplate = "rh_probot", planetName = "rori", npcName = "Imperial Probot" },
+			{ npcTemplate = "rh_stormtrooper", planetName = "rori", npcName = "" },
+			{ npcTemplate = "rh_stormtrooper", planetName = "rori", npcName = "" }
 		},
 		itemSpawns =
 		{
-			{ itemTemplate = "object/tangible/mission/quest_item/singular_nak_q1_needed.iff", itemName = "" }
+			{ itemTemplate = "object/tangible/mission/mission_datadisk.iff", itemName = "Encrypted Datadisk" }
 		},
 		rewards =
 		{
+			{ rewardType = "credits", amount = 300 },
+			{ rewardType = "faction", faction = "rebel", amount = 15 }
 		}
 	},
 	{ 
