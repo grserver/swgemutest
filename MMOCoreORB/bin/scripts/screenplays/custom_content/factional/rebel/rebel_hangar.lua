@@ -74,8 +74,8 @@ RebelHangar = ThemeParkLogic:new {
 	npcMap = npcMapRebelHangar,
 	className = "RebelHangar",
 	screenPlayState = "rebel_hangar_quest",
-	--faction = FACTIONREBEL,
-	distance = 400
+	faction = FACTIONREBEL,
+	distance = 300
 }
 
 registerScreenPlay("RebelHangar", true)
