@@ -14,7 +14,7 @@ major_eston_missions =
 		},
 		itemSpawns =
 		{
-			{ itemTemplate = "object/tangible/mission/eston_q1_needed.iff", itemName = "" }
+			{ itemTemplate = "object/tangible/mission/ian_logo_q1_needed.iff", itemName = "" }
 		},
 		rewards =
 		{
@@ -63,7 +63,7 @@ npcMapRebelHangar =
 	{
 		spawnData = { planetName = "rori", npcTemplate = "major_eston", x = 3655.7, z = 96, y = -6472.6, direction = 90, cellID = 0, position = STAND },
 		npcNumber = 1,
-		stfFile = "@static_npc/rori/major_eston",
+		stfFile = "static_npc/dathomir/dathomir_tradeoutpost_singular_nak", --@static_npc/rori/major_eston",
 		missions = major_eston_missions
 	},
 	
