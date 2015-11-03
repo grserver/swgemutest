@@ -37,15 +37,15 @@ rh_imperial_sergeant = Creature:new {
 	lootGroups = {
 					{
 						groups = {
-								{group = "task_loot_rebel_shield_part", chance = 10000000},
+								{group = "task_loot_ancient_lightsaber", chance = 10000000},
 				
 								},
 			lootChance = 10000000
 		},
 	},
-	weapons = {"imperial_weapons_medium"},
+	weapons = {},
 	conversationTemplate = "",
-	attacks = merge(brawlermaster,marksmanmaster)
+	attacks = merge(tkamaster, brawlermaster)
 }
 
 CreatureTemplates:addCreatureTemplate(rh_imperial_sergeant, "rh_imperial_sergeant")

@@ -27,9 +27,6 @@ major_eston = Creature:new {
 	templates = {
 		"object/mobile/dressed_rebel_major_zabrak_female_01.iff",
 	},
-	
-
-
 	conversationTemplate = "rebel_hangar_mission_giver_convotemplate"
 }
 CreatureTemplates:addCreatureTemplate(major_eston, "major_eston")
