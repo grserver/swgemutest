@@ -1,15 +1,17 @@
 major_eston = Creature:new {
+	objectName = "",
 	customName = "Major Eston",
-	socialGroup = "rebel",
-	faction = "rebel",
-	level = 300,
-	chanceHit = 0.36,
-	damageMin = 2500,
-	damageMax = 2600,
-	baseXp = 0,
-	baseHAM = 77750,
-	baseHAMmax = 97400,
+	socialGroup = "townsperson",
+	faction = "townsperson",
+	level = 100,
+	chanceHit = 1,
+	damageMin = 645,
+	damageMax = 1000,
+	baseXp = 9429,
+	baseHAM = 24000,
+	baseHAMmax = 30000,
 	armor = 0,
+	resists = {0,0,0,0,0,0,0,0,-1},
 	meatType = "",
 	meatAmount = 0,
 	hideType = "",
@@ -20,13 +22,16 @@ major_eston = Creature:new {
 	tamingChance = 0,
 	ferocity = 0,
 	pvpBitmask = NONE,
-	creatureBitmask = NONE,
+	creatureBitmask = PACK,
 	optionsBitmask = 264,
 	diet = HERBIVORE,
 
-	templates = {
-		"object/mobile/dressed_rebel_major_zabrak_female_01.iff",
-	},
-	conversationTemplate = "rebel_hangar_mission_giver_convotemplate"
+	templates = {"object/mobile/dressed_rebel_major_zabrak_female_01.iff"},
+	lootGroups = {},
+	weapons = {},
+	conversationTemplate = "rebel_hangar_mission_giver_convotemplate",
+	attacks = {
+	}
 }
+
 CreatureTemplates:addCreatureTemplate(major_eston, "major_eston")
