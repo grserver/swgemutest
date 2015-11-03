@@ -58,7 +58,7 @@ npcMapSingularNak =
 	{
 		spawnData = { planetName = "dathomir", npcTemplate = "singular_nak", x = 571.41, z = 6, y = 3091.62, direction = 151, cellID = 0, position = STAND },
 		npcNumber = 1,
-		stfFile = "@static_npc/dathomir/dathomir_tradeoutpost_singular_nak",
+		stfFile = "@static_npc/rori/major_eston",
 		missions = singular_nak_missions
 	},
 	
